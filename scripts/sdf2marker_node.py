@@ -25,19 +25,18 @@ markers = []
 def prepare_link_marker(link, full_linkname):
   marker_msg = link2marker_msg(link, full_linkname, use_collision, rospy.Duration(2 * updatePeriod))
   if marker_msg:
-    markers.append(marker_msg)
+    markers.append(marker_msg[0])
 
 
 def prepare_markers(prefix):
   world.for_all_links(prepare_link_marker)
   for marker in markers:
-    marker.header.frame_id = prefix + pysdf.sdf2tfname(marker.header.frame_id)
+    marker.header.frame_id = 'world'
     marker.ns = prefix + pysdf.sdf2tfname(marker.ns)
 
 
 def publishMarkers():
   for marker in markers:
-    #print(marker)
     markerPub.publish(marker)
 
 
@@ -66,7 +65,7 @@ def main():
   markerPub = rospy.Publisher('/visualization_marker', Marker, queue_size=10)
 
   global world
-  sdf = pysdf.SDF(model=args.sdf)
+  sdf = pysdf.SDF(file=args.sdf)
   world = sdf.world
 
   prepare_markers(args.prefix)
