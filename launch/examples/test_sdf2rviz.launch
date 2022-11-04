@@ -1,0 +1,9 @@
+<launch>
+
+    <arg name="model" default="$(find gazebo2rviz)/launch/examples/test.sdf" />
+    <!-- Start RVIZ visualisation -->
+    <node name="rviz" pkg="rviz" type="rviz" respawn="true" args="-d $(find remote_sensing_locomanipulation)/resources/multi_surfaces_tracking.rviz" />
+
+    <node name="sdf2marker" pkg="gazebo2rviz" type="sdf2marker_node.py" args="$(arg model)" output="screen" />
+ 
+</launch>
